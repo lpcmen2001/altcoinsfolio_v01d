@@ -1,15 +1,23 @@
 {
-  "name": "meteor-scorekeeper-tut",
+  "name": "altcoins-folio",
   "private": true,
   "scripts": {
     "start": "meteor run"
   },
   "dependencies": {
-    "babel-runtime": "^6.20.0",
+    "babel-runtime": "^6.26.0",
+    "babyparse": "^0.4.6",
+    "ccxt": "^1.6.96",
+    "crypto-js": "^3.1.9-1",
+    "faker": "^4.1.0",
+    "fixed-data-table": "^0.6.4",
+    "fixed-data-table-2": "^0.8.1",
+    "fs": "0.0.1-security",
     "meteor-node-stubs": "~0.2.4",
     "numeral": "^2.0.6",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
-    "react-flip-move": "^2.9.14"
+    "react-flip-move": "^2.9.14",
+    "react-tooltip": "^3.3.0"
   }
 }

@@ -4,6 +4,7 @@ import FlipMove from 'react-flip-move';
 import Player from './Player';
 
 export default class PlayerList extends React.Component {
+
   renderPlayers() {
     if (this.props.players.length === 0) {
       return (
