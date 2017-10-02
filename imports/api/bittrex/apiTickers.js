@@ -3,8 +3,6 @@ import {Assets} from '../assets';
 import {AllTickers} from '../alltickers';
 import apiOrders from './apiOrders';
 
-//import pullDeposits from './pullDeposits';
-
 export default function (bittrex) {
     const apiTickers = function(){
         console.log("apiTickers.js : Bittrex API Tickers Updating...");
@@ -70,7 +68,6 @@ export default function (bittrex) {
             });
             console.log("apiTickers.js : Bittrex API Tickers Done.");
             apiOrders(bittrex);
-            //pullDeposits(bittrex); 
         }) ()
     }
     apiTickers();

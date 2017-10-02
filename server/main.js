@@ -10,7 +10,7 @@ import apiBalance from './../imports/api/bittrex/apiBalance';
 
 
 //import Baby from 'babyparse';
-//var fs = require('fs');
+//var fs = require('fs');  
 
 
 var ccxt = require ('ccxt');
@@ -18,6 +18,7 @@ var ccxt = require ('ccxt');
 
 Meteor.startup(() => {
     let bittrex = new ccxt.bittrex();
+
 
 
     Meteor.methods({

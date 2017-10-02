@@ -1018,7 +1018,7 @@ export default function (bittrex) {
                         console.log("Updated _id: " + order._id);
                     }
                     else{
-                        console.log("ADDING SYMBOL IN WRONG SYMBOL");
+                        console.log("ADDING SYMBOL IN WRONG SYMBOL"); 
                     }
 
                 }

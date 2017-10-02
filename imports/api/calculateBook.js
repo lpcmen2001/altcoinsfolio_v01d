@@ -42,26 +42,39 @@ export default function () {
                             let costBtc = 0;
                             let costPerItem = 0;
                             let curIndex = 0;
-                            while (!costFound){
-                                //console.log('Going to account for ' + balance);
+                            let usedOrdersIds = new Array();
+                            while (!costFound){                                
                                 for (orderItem of asset.orders){
+                                    let valid = true;
+                                    for (usedOrderId of usedOrdersIds){
+                                        if (orderItem._id == usedOrderId){
+                                            valid = false;
+                                        }
+                                    } 
                                     if (orderItem.epoch == epochArray[0] && orderItem.type == 'buy'){
-                                        if (orderItem.qty > balance){
+                                        epochArray.shift();
+                                        if (orderItem.qty > balance && valid == true && costFound == false){
                                             costBtc = Number(costBtc) + ((Number(orderItem.priceBtc)*Number(balance))/Number(orderItem.qty));
                                             curIndex++;
                                             costFound = true;
-                                        }else if (orderItem.qty == balance){
+                                        }else if (orderItem.qty == balance && valid == true && costFound == false){
                                             costBtc = Number(costBtc) + Number(orderItem.priceBtc);
                                             curIndex++;
                                             costFound = true;
-                                        }else if (orderItem.qty < balance){
+                                        }else if (orderItem.qty < balance && valid == true && costFound == false){
                                             costBtc = costBtc + Number(orderItem.priceBtc);
                                             balance = balance - Number(orderItem.qty);
                                             curIndex++;
                                             costFound = false;
+                                            usedOrdersIds.push(orderItem._id);
+
                                         }
                                     }
                                 }
+                                if (epochArray.length == 0){
+                                    costFound = true;
+                                }
+                                
                             }
                             costPerItem = Number(costBtc/balanceSymbol);
                             balCostBtc = costBtc;

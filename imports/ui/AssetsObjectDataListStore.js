@@ -9,12 +9,12 @@ class AssetsObjectDataListStore {
       const isReady = this.handle.ready();
       if (isReady){
         assets = Assets.find().fetch();
-        this.size = assets.length-1;
+        this.size = assets.length;
         this._cache = assets;
       }
     });
 
-    this.size = assets.length-1;
+    this.size = assets.length;
     this._cache = assets;
 
   }

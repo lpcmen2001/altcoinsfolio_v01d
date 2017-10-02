@@ -105,7 +105,7 @@ class SortExample extends React.Component {
               this._stdOnSortChange();
             }
             this.updateBtcUsdValue();
-            //console.log(this.state.btcUsdValue);
+
             myFunct = myFunct.bind(this);
             setTimeout(myFunct, 500);
           }); 
@@ -184,7 +184,6 @@ _stdOnSortChange() {
       var valueB = this._dataList.getObjectAt(indexB)[columnKey];
       switch (columnKey){
         case 'bookpnlUsd':
-          //console.log("Special bookpnl");
           valueA = Number(this._dataList.getObjectAt(indexA).book.pnlUsd);
           valueB = Number(this._dataList.getObjectAt(indexB).book.pnlUsd);
           break;
@@ -205,7 +204,6 @@ _stdOnSortChange() {
           valueB = Number(this._dataList.getObjectAt(indexB).book.balUnrPnlUsd);
           break;
         default:
-          //console.log("Normal case");
           break;
       }
 
@@ -244,7 +242,6 @@ _stdOnSortChange() {
   render() {
     let dataPointer = null;
     var {sortedDataList, colSortDirs} = this.state;
-    //console.log(sortedDataList);
     if (!sortedDataList._cache){
       let newData = new Array();
       for (index of sortedDataList._indexMap){

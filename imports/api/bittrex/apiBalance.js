@@ -23,6 +23,7 @@ export default function (bittrex) {
                         };
                         let newBalance = balObj[i].Balance;
                         let thisAsset = Assets.findOne({symbol:balObj[i].Currency});
+                        
                         if (thisAsset){
                             Assets.update(thisAsset._id, {$set:{balance: newBalance}});
                         }else{
