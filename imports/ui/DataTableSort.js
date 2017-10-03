@@ -79,6 +79,9 @@ class SortExample extends React.Component {
     this._defaultSortIndexes = [];
     this.rowsCountAmnt = 3;
     var size = this._dataList.getSize();
+
+    this.currentMode = 'sort';
+
     for (var index = 0; index < size; index++) {
       this._defaultSortIndexes.push(index);
     }
@@ -89,11 +92,38 @@ class SortExample extends React.Component {
       counter: 0,
       rowHeight: 50,
       sortedDataList: this._dataList,
+      filteredDataList: this._dataList,
       colSortDirs: {}
     };
 
     this._onSortChange = this._onSortChange.bind(this);
+    this._onFilterChange = this._onFilterChange.bind(this);
   }
+
+
+
+  _onFilterChange(e) {
+    if (!e.target.value) {
+      this.setState({
+        filteredDataList: this._dataList,
+      });
+    }
+    this.currentMode = 'filter';
+    var filterBy = e.target.value.toLowerCase();
+    var size = this._dataList.getSize();
+    var filteredIndexes = [];
+    for (var index = 0; index < size; index++) {
+      var {symbol} = this._dataList.getObjectAt(index);
+      if (symbol.toLowerCase().indexOf(filterBy) !== -1) {
+        filteredIndexes.push(index);
+      }
+    }
+
+    this.setState({
+      filteredDataList: new DataListWrapper(filteredIndexes, this._dataList),
+    });
+  }
+
   componentDidMount(){
     this.assetTracker = Tracker.autorun(()=>{
         const isReady = this.handle.ready();  
@@ -170,6 +200,7 @@ _stdOnSortChange() {
 
 
   _onSortChange(columnKey, sortDir) {
+    this.currentMode = 'sort';
     if (this._defaultSortIndexes.length != this.state.sortedDataList.size){
       this._defaultSortIndexes = [];
       var size = this._dataList.getSize();
@@ -242,17 +273,40 @@ _stdOnSortChange() {
   render() {
     let dataPointer = null;
     var {sortedDataList, colSortDirs} = this.state;
-    if (!sortedDataList._cache){
-      let newData = new Array();
-      for (index of sortedDataList._indexMap){
-        newData.push(sortedDataList._data._cache[index]);
+    var {filteredDataList} = this.state;
+
+
+    if (this.currentMode == 'sort'){
+      if (!sortedDataList._cache){
+        let newData = new Array();
+        for (index of sortedDataList._indexMap){
+          newData.push(sortedDataList._data._cache[index]);
+        }
+        dataPointer = newData;
+      }else if(sortedDataList._cache){
+        dataPointer = sortedDataList._cache;
       }
-      dataPointer = newData;
-    }else if(sortedDataList._cache){
-      dataPointer = sortedDataList._cache;
     }
+    else if (this.currentMode == 'filter'){
+      if (!filteredDataList._cache){
+        let newData = new Array();
+        this.rowsCountAmnt = filteredDataList._indexMap.length;
+        for (index of filteredDataList._indexMap){
+          newData.push(filteredDataList._data._cache[index]);
+        }
+        dataPointer = newData;
+      }else if(filteredDataList._cache){
+        dataPointer = filteredDataList._cache;
+      }
+    }
+
     return (
       <div>
+        <input
+          onChange={this._onFilterChange}
+          placeholder="Filter by Symbol"
+        />
+        <br />
       <button onClick={this.refreshVars.bind(this)}>Refresh</button>
       <Table
         rowHeight={this.state.rowHeight}
@@ -270,7 +324,11 @@ _stdOnSortChange() {
               Symbol
             </SortHeaderCell>
           }
-          cell={<TextCell data={sortedDataList} />}
+          cell={({columnKey, rowIndex, ...props}) => (
+                  <Cell {...props}>
+                      {dataPointer[rowIndex][columnKey]}
+                  </Cell>
+                )}
           width={100}
         />
 
